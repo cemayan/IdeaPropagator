@@ -5,20 +5,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Entity
+@Document(collection = "shareditems")
 public class SharedItem {
 
     @Id
-    public String Id;
-    public String Title;
-    public String Content;
+    public ObjectId _id;
+    public String title;
+    public String content;
 }

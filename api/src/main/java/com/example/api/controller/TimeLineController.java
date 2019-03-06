@@ -3,7 +3,8 @@ package com.example.api.controller;
 
 import com.example.api.model.SharedItem;
 import com.example.api.service.KafkaConsumer;
-import com.example.api.service.KafkaProducer;
+import com.example.api.service.KafkaStreamProducer;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,25 +19,26 @@ public class TimeLineController {
     private final KafkaConsumer kafkaConsumer;
 
     @Autowired
-    private final KafkaProducer kafkaProducer;
+    private final KafkaStreamProducer kafkaProducer;
 
-    public TimeLineController(KafkaConsumer kafkaConsumer, KafkaProducer kafkaProducer) {
+    public TimeLineController(KafkaConsumer kafkaConsumer, KafkaStreamProducer kafkaProducer) {
         this.kafkaConsumer = new KafkaConsumer();
-        this.kafkaProducer = new KafkaProducer();
+
+        this.kafkaProducer = new KafkaStreamProducer();
     }
 
 
-    public Flux<SharedItem> getAllSharedItem(){
-        return kafkaConsumer.getSharedItemStream();
-    }
+//    public Flux<SharedItem> getAllSharedItem(){
+//        return kafkaConsumer.getSharedItemStream();
+//    }
 
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public void sendSharedItem(){
         SharedItem model = new SharedItem();
-        model.Id = "32131";
-        model.Title = "Baslik 1";
-        model.Content = "dasdsdhgsdfa";
+        model._id = new ObjectId();
+        model.title = "Baslik 1";
+        model.content = "dasdsdhgsdfa";
         kafkaProducer.send(model);
     }
 }
