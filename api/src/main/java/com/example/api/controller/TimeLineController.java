@@ -2,12 +2,11 @@ package com.example.api.controller;
 
 
 import com.example.api.model.SharedItem;
+import com.example.api.repository.SharedItemRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -15,30 +14,13 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/timeline")
 public class TimeLineController {
 
-//    private KafkaConsumer kafkaConsumer;
-//
-//    private KafkaStreamProducer kafkaProducer;
-//
-//    public TimeLineController(KafkaConsumer kafkaConsumer, KafkaStreamProducer kafkaProducer) {
-//        this.kafkaConsumer = new KafkaConsumer();
-//        this.kafkaProducer = new KafkaStreamProducer();
-//    }
-//
-//
-//    @RequestMapping(value = "/", method = RequestMethod.GET)
-//    public String getAllSharedItem() {
-//        return "dasda";
-//        //return kafkaConsumer.getSharedItemStream();
-//    }
-//
-//
-//    @RequestMapping(value = "/send", method = RequestMethod.POST)
-//    public void sendSharedItem(@RequestBody SharedItem sharedItem) {
-//
-//        SharedItem model = new SharedItem();
-//        model.id = sharedItem.id;
-//        model.title = sharedItem.title;
-//        model.content = sharedItem.content;
-//        kafkaProducer.send(model);
-//    }
+
+    @Autowired
+    private SharedItemRepository sharedItemRepository;
+
+    @GetMapping(value = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<SharedItem> findAll() {
+        return sharedItemRepository.findAll();
+    }
+
 }

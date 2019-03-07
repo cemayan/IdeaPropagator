@@ -21,7 +21,6 @@ public class KafkaStreamProducer {
 
     private static final String BOOTSTRAP_SERVERS = "localhost:9092";
     private static final String TOPIC = "test";
-    private static final String GROUP_ID = "test.group";
 
     private KafkaSender<String, SharedItem> sender;
     private SenderOptions<String, SharedItem> senderOptions;

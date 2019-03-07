@@ -20,6 +20,7 @@ public class SharedItem {
 
     @Id
     public ObjectId _id;
+    public String id;
     public String title;
     public String content;
 }

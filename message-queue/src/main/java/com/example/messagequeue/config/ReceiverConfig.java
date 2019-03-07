@@ -1,8 +1,7 @@
 package com.example.messagequeue.config;
 
-
-import com.example.messagequeue.consumer.KafkaReciever;
 import com.example.messagequeue.model.SharedItem;
+import com.example.messagequeue.service.KafkaStreamConsumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,16 +22,10 @@ public class ReceiverConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
-
-    @Value("${spring.kafka.topic.test}")
-    private String topic;
-
-
     @Bean
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(ConsumerConfig.Top, bootstrapServers);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "test.group");
@@ -56,7 +49,7 @@ public class ReceiverConfig {
     }
 
     @Bean
-    public KafkaReciever receiver() {
-        return new KafkaReciever();
+    public KafkaStreamConsumer receiver() {
+        return new KafkaStreamConsumer();
     }
 }
