@@ -15,13 +15,14 @@ import java.util.Arrays;
 
 @RestController
 @RequestMapping("/timeline")
+@CrossOrigin
 public class TimeLineController {
 
 
     @Autowired
     private SharedItemRepository sharedItemRepository;
 
-    @GetMapping(value = "/all", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    @GetMapping(value = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<SharedItem> findAll() {
         return sharedItemRepository.findWithTailableCursorBy();
     }
