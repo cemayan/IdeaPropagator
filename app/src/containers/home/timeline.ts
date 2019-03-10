@@ -10,6 +10,7 @@ export const mapDispatchToProps = (dispatch) => {
   };
 };
 
+
 export const mapStateToProps = (sharedItems: ISharedItem[]) => {
   return {
     sharedItems
