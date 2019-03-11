@@ -8,8 +8,6 @@ import reactor.core.publisher.Flux;
 
 public interface SharedItemRepository extends ReactiveMongoRepository<SharedItem, String> {
 
-
-    @Tailable
+     @Tailable
      Flux<SharedItem> findWithTailableCursorBy();
-
 }

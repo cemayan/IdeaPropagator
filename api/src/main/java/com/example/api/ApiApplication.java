@@ -19,10 +19,10 @@ public class ApiApplication  {
         SpringApplication.run(ApiApplication.class, args);
     }
 
-    @Bean
-    public ApplicationRunner initialize(final ReactiveMongoTemplate mongoTemplate) {
-        return args -> {
-            Data.initializeAllData(mongoTemplate);
-        };
-    }
+//    @Bean
+//    public ApplicationRunner initialize(final ReactiveMongoTemplate mongoTemplate) {
+//        return args -> {
+//            Data.initializeAllData(mongoTemplate);
+//        };
+//    }
 }

@@ -10,11 +10,28 @@ export interface IAction extends ISharedItem{
   type: TimeLine
 }
 
-export function addSharedItem(sharedItem:ISharedItem){
+export function addSharedItem(sharedItem: ISharedItem){
+  return{
+    id: sharedItem.id,
+    title: sharedItem.title,
+    content: sharedItem.content,w
+    type: TimeLine.ADD_SHAREDITEM
+  } 
+}
+
+
+export function deleteSharedItem(id: string){
+  return{
+    id: id,
+    type: TimeLine.DELETE_SHAREDITEM
+  } 
+}
+
+export function updateSharedItem(sharedItem: ISharedItem){
   return{
     id: sharedItem.id,
     title: sharedItem.title,
     content: sharedItem.content,
-    type: TimeLine.ADD_SHAREDITEM
+    type: TimeLine.UPDATE_SHAREDITEM
   } 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 
 @RestController
@@ -22,13 +23,14 @@ public class TimeLineController {
     @Autowired
     private SharedItemRepository sharedItemRepository;
 
-    @GetMapping(value = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<SharedItem> findAll() {
-        return sharedItemRepository.findWithTailableCursorBy();
+        return sharedItemRepository.findAll();
     }
 
-    @PostMapping(value = "/add")
-    public Mono<SharedItem> addNewSubject(@RequestBody SharedItem sharedItem) {
+
+    @PostMapping()
+    public Mono<SharedItem> addNewItem(@RequestBody SharedItem sharedItem) {
 
         final String uri = "http://localhost:8081/";
 
@@ -42,4 +44,27 @@ public class TimeLineController {
 
         return sharedItemRepository.save(sharedItem);
     }
+
+
+    @DeleteMapping("/{id}")
+    public Mono<ResponseEntity<Void>> deleteItem(@PathVariable("id") String id) {
+        return sharedItemRepository.findById(id)
+                .flatMap(p -> this.sharedItemRepository.deleteById(p.id)
+                .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK))))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+
+    @PutMapping("/{id}")
+    public Mono<ResponseEntity<Void>> updateItem(@PathVariable("id") String id, @Valid @RequestBody SharedItem sharedItem) {
+        return sharedItemRepository.findById(id)
+                .flatMap(existingItem -> {
+                    existingItem.title = sharedItem.title;
+                    existingItem.content = sharedItem.content;
+                    return this.sharedItemRepository.save(existingItem);
+                })
+                .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
 }

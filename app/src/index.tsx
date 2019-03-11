@@ -3,11 +3,12 @@ import * as ReactDOM from 'react-dom';
 import App from './components/App';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
-import {createStore, combineReducers} from 'redux' 
-import {Provider, connect} from 'react-redux' 
-import * as  reducer from  './reducers/index' 
+import {createStore, applyMiddleware} from 'redux' 
+import {Provider} from 'react-redux' 
+import * as  reducer from  './reducers/index';
+import thunk from 'redux-thunk'; 
 
-const store = createStore(reducer.sharedItems);
+const store = createStore(reducer.sharedItems, applyMiddleware(thunk));
 
 ReactDOM.render(
   <Provider store={store}>

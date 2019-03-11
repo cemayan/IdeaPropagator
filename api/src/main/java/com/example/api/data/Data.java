@@ -13,7 +13,6 @@ public class Data {
 
     public static void initializeAllData(final ReactiveMongoTemplate mongoTemplate) {
 
-
         final Mono<Void> initializeCollections =
                mongoTemplate
                 .dropCollection(SharedItem.class)
