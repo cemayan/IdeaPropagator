@@ -9,6 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Document(collection = "shareditems")
 public class SharedItem {
 

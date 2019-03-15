@@ -14,7 +14,7 @@ export function addSharedItem(sharedItem: ISharedItem){
   return{
     id: sharedItem.id,
     title: sharedItem.title,
-    content: sharedItem.content,w
+    content: sharedItem.content,
     type: TimeLine.ADD_SHAREDITEM
   } 
 }

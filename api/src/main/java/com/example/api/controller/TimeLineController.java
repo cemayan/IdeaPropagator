@@ -1,36 +1,42 @@
 package com.example.api.controller;
 
-
+import com.example.api.service.SharedItemService;
 import com.example.api.model.SharedItem;
-import com.example.api.repository.SharedItemRepository;
-import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import org.reactivestreams.Publisher;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.Arrays;
 
 @RestController
-@RequestMapping("/timeline")
+@RequestMapping(value = "/timeline", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin
+@org.springframework.context.annotation.Profile("classic")
 public class TimeLineController {
 
 
-    @Autowired
-    private SharedItemRepository sharedItemRepository;
+    private final SharedItemService sharedItemService;
+    private final ApplicationEventPublisher publisher;
+    private final MediaType mediaType = MediaType.APPLICATION_JSON_UTF8;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Flux<SharedItem> findAll() {
-        return sharedItemRepository.findAll();
+    public TimeLineController(SharedItemService sharedItemService, ApplicationEventPublisher publisher) {
+        this.sharedItemService = sharedItemService;
+        this.publisher = publisher;
+    }
+
+
+    @GetMapping
+    public Publisher<SharedItem> findAll() {
+        return sharedItemService.all();
     }
 
 
     @PostMapping()
-    public Mono<SharedItem> addNewItem(@RequestBody SharedItem sharedItem) {
+    public Publisher<ResponseEntity<SharedItem>> addNewItem(@RequestBody SharedItem sharedItem) {
 
         final String uri = "http://localhost:8081/";
 
@@ -42,29 +48,21 @@ public class TimeLineController {
 
         ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.POST, entity, String.class);
 
-        return sharedItemRepository.save(sharedItem);
+        return sharedItemService.create(sharedItem).map(p -> ResponseEntity.created(URI.create("/timeline/" + p.id))
+                .contentType(mediaType)
+                .build());
     }
 
 
     @DeleteMapping("/{id}")
-    public Mono<ResponseEntity<Void>> deleteItem(@PathVariable("id") String id) {
-        return sharedItemRepository.findById(id)
-                .flatMap(p -> this.sharedItemRepository.deleteById(p.id)
-                .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK))))
-                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Publisher<SharedItem> deleteItem(@PathVariable("id") String id) {
+        return sharedItemService.delete(id);
     }
 
 
     @PutMapping("/{id}")
-    public Mono<ResponseEntity<Void>> updateItem(@PathVariable("id") String id, @Valid @RequestBody SharedItem sharedItem) {
-        return sharedItemRepository.findById(id)
-                .flatMap(existingItem -> {
-                    existingItem.title = sharedItem.title;
-                    existingItem.content = sharedItem.content;
-                    return this.sharedItemRepository.save(existingItem);
-                })
-                .then(Mono.just(new ResponseEntity<Void>(HttpStatus.OK)))
-                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Publisher<SharedItem> updateItem(@PathVariable("id") String id, @Valid @RequestBody SharedItem sharedItem) {
+        return sharedItemService.update(id, sharedItem);
     }
 
 }

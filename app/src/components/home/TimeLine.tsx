@@ -18,7 +18,13 @@ sharedItems?: ISharedItem[];
 export class TimeLine extends React.Component<IProps,IContext> {
 
   public async componentWillMount() {
-      this.props.fetchItems()
+      this.props.fetchItems();
+
+      var source = new EventSource('http://localhost:8080/sse/timeline')
+
+      source.onmessage = (e) => {
+        this.props.addSharedItem(JSON.parse(e.data).source)
+      }
   }
 
 
