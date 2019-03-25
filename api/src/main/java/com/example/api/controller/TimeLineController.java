@@ -2,6 +2,8 @@ package com.example.api.controller;
 
 import com.example.api.service.SharedItemService;
 import com.example.api.model.SharedItem;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +17,8 @@ import java.util.Arrays;
 @RestController
 @RequestMapping(value = "/timeline", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin
-@org.springframework.context.annotation.Profile("classic")
+@Api(tags = "timeline")
+//@org.springframework.context.annotation.Profile("classic")
 public class TimeLineController {
 
 
@@ -30,12 +33,15 @@ public class TimeLineController {
 
 
     @GetMapping
+    @ApiOperation(value = "${TimeLineontroller.findAll}")
     public Publisher<SharedItem> findAll() {
+
         return sharedItemService.all();
     }
 
 
     @PostMapping()
+    @ApiOperation(value = "${TimeLineontroller.addNewItem}")
     public Publisher<ResponseEntity<SharedItem>> addNewItem(@RequestBody SharedItem sharedItem) {
 
         final String uri = "http://localhost:8081/";
@@ -54,12 +60,14 @@ public class TimeLineController {
     }
 
 
+    @ApiOperation(value = "${TimeLineontroller.deleteItem}")
     @DeleteMapping("/{id}")
     public Publisher<SharedItem> deleteItem(@PathVariable("id") String id) {
         return sharedItemService.delete(id);
     }
 
 
+    @ApiOperation(value = "${TimeLineontroller.updateItem}")
     @PutMapping("/{id}")
     public Publisher<SharedItem> updateItem(@PathVariable("id") String id, @Valid @RequestBody SharedItem sharedItem) {
         return sharedItemService.update(id, sharedItem);

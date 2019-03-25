@@ -8,7 +8,13 @@ export const mapDispatchToProps = (dispatch) => {
       dispatch(addSharedItem(sharedItem));
     },
     fetchItems: () => {
-       fetch('http://127.0.0.1:8080/timeline/').then(x => x.json()).then((response:ISharedItem[]) => {
+       fetch('http://127.0.0.1:8080/timeline/', {
+          headers : {
+            "Authorization": "Bearer : " + sessionStorage.getItem("token"),
+            "Content-Type" : "application/json",
+          }
+       })
+       .then(x => x.json()).then((response:ISharedItem[]) => {
                 response.forEach(data => {
                   dispatch(addSharedItem(data));
                 })
@@ -36,9 +42,11 @@ export const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export const mapStateToProps = (sharedItems: ISharedItem[]) => {
+
+
+export const mapStateToProps = (sharedItems: ISharedItem[])   => {
   return {
-    sharedItems
+    states : sharedItems
   };
 }
 

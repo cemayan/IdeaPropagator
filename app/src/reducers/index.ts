@@ -1,6 +1,8 @@
 import {TimeLine}  from  '../constants/home/timeline';
+import {Auth}  from  '../constants/auth/index';
 import {ISharedItem, IAction}  from '../actions/home/timeline';
-
+import {ILoginForm, IRegisterForm, ILoginAction}  from '../actions/auth/index';
+import { combineReducers } from 'redux'
 
 export const sharedItems = (state:ISharedItem[] =[], action :IAction) =>{
 
@@ -28,3 +30,18 @@ export const sharedItems = (state:ISharedItem[] =[], action :IAction) =>{
       return state;  
   }
 } 
+
+export const loginForm = (state: ILoginForm= {username:"", password: "", token:""}, action: ILoginAction) => {
+  switch(action.type) {
+    case Auth.LOGIN :
+ 
+      return state;
+    default:
+      return state;  
+  }
+}
+
+export default combineReducers({
+  sharedItems,
+  loginForm
+})

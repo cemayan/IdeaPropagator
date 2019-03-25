@@ -4,6 +4,7 @@ import com.example.api.ApiEvent;
 import com.example.api.ApiPublisher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ public class ServerSentEventController {
         this.objectMapper = objectMapper;
     }
 
+    @ApiOperation(value = "${ServerSentEventController.sharedItems}")
     @GetMapping(value = "/sse/timeline", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public  Flux<String> sharedItems() {
         return  this.events.map(pce -> {

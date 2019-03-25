@@ -25,6 +25,7 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     contentBase: './public',
+    inline: true,
     proxy: {
       '/ws': {
         target: 'http://localhost:8080',

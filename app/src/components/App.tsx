@@ -3,13 +3,21 @@ import {  Container,Image,Menu } from 'semantic-ui-react'
 import './App.css';
 import {BrowserRouter as Router,Route,Link} from 'react-router-dom';
 import TimeLine  from '../containers/home/TimeLine';
+import  LoginForm from '../containers/auth/LoginForm';
 
 
 class App extends React.Component<any,any> {
 
+  public checkToken () {
+    //TODO:Check token eklenecek
+  }
+
   public render() {
     return (
       <div>
+        {sessionStorage.getItem("token")=== null ?
+        <LoginForm />
+        :
         <Router>
           <div>
             <Menu fixed='top' inverted>
@@ -27,7 +35,7 @@ class App extends React.Component<any,any> {
             </Container>
             </div>
         </Router>
-      
+        }   
     </div>
     );
   }

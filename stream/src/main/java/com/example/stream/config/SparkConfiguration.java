@@ -61,7 +61,6 @@ public class SparkConfiguration {
         kafkaParams.put("bootstrap.servers", bootstrapServers);
         kafkaParams.put("key.deserializer", StringDeserializer.class);
         kafkaParams.put("value.deserializer", StringDeserializer.class);
-        kafkaParams.put(JsonDeserializer.TRUSTED_PACKAGES,"*");
         kafkaParams.put("group.id", "test-group");
         kafkaParams.put("auto.offset.reset", "latest");
         kafkaParams.put("enable.auto.commit", false);
@@ -95,8 +94,6 @@ public class SparkConfiguration {
     public SparkSession sparkSession() {
         return  SparkSession
                 .builder()
-                .sparkContext(javaSparkContext().sc())
-                .appName("asd")
                 .getOrCreate();
     }
 

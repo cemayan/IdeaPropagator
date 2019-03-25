@@ -4,7 +4,7 @@ import { SearchBox } from './SearchBox';
 import { Divider, Feed, Icon } from 'semantic-ui-react';
 
 interface IProps {
-sharedItems? : ISharedItem[],
+states: any,
 addSharedItem(sharedItem: ISharedItem): void,
 fetchItems():any,
 deleteSharedItem(id :string): void
@@ -19,7 +19,6 @@ export class TimeLine extends React.Component<IProps,IContext> {
 
   public async componentWillMount() {
       this.props.fetchItems();
-
       var source = new EventSource('http://localhost:8080/sse/timeline')
 
       source.onmessage = (e) => {
@@ -36,7 +35,7 @@ export class TimeLine extends React.Component<IProps,IContext> {
          <Divider/>
 
          <Feed>
-         {this.props.sharedItems.map(sharedItem => (
+         {this.props.states.sharedItems.map(sharedItem => (
           <Feed.Event>
             <Feed.Label image='https://react.semantic-ui.com/images/avatar/small/joe.jpg' />
             <Feed.Content>
