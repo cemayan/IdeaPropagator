@@ -11,11 +11,13 @@ export interface IRegisterForm {
   password : string,
 } 
 
+export interface IToken {
+  token : string,
+} 
+
 export interface ILoginAction  extends ILoginForm,IRegisterForm {
   type : string
 } 
-
-
 
 
 export function login(loginForm: ILoginForm) {
@@ -24,6 +26,13 @@ export function login(loginForm: ILoginForm) {
     password: loginForm.password,
     token: loginForm.token,
     type: Auth.LOGIN
+  }
+}
+
+
+export function checkToken(token: IToken) {
+  return { 
+    token: token.token,
   }
 }
 

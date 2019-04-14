@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import {login, ILoginForm}  from '../../actions/auth/index'
 import {LoginForm} from '../../components/login/LoginForm';
+import { push } from 'connected-react-router';
 
 export const mapDispatchToProps = (dispatch) => {
   return {
@@ -23,7 +24,9 @@ export const mapDispatchToProps = (dispatch) => {
           loginform.token = token;
           sessionStorage.setItem("token", token);
           dispatch(login(loginform))
-          window.location.reload()
+          dispatch(push('/home'));
+
+          //window.location.reload()
       }).catch((e) => console.log(e) )
     }
   }
@@ -36,4 +39,3 @@ export const mapStateToProps = (loginForm: ILoginForm) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
-

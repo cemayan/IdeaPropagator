@@ -18,15 +18,21 @@ export class SearchBox extends React.Component<IProps,IContext> {
     // socket.addEventListener('message', function (event) {
     //   console.log('message from server: ' + event.data);
     // });
-
-
    
+  }
+
+
+  public onKeyPress(event) {
+    if(event.key === "Enter") {
+      //TODO :  Addd shared item  eklenecek.
+    }
+
   }
 
   render() {
     return (
       <div>
-         <Input loading icon='user' placeholder='Type something...' fluid />
+         <Input loading icon='user' placeholder='Type something...' onKeyPress={this.onKeyPress} fluid />
       </div>
     );
   }

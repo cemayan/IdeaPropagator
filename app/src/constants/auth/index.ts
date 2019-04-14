@@ -1,4 +1,5 @@
 export enum Auth  {
   LOGIN = 'LOGIN',
-  REGISTER = 'REGISTER'
+  REGISTER = 'REGISTER',
+  CHECK = 'CHECK'
 }

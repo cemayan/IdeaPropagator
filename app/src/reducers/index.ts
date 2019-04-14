@@ -2,7 +2,8 @@ import {TimeLine}  from  '../constants/home/timeline';
 import {Auth}  from  '../constants/auth/index';
 import {ISharedItem, IAction}  from '../actions/home/timeline';
 import {ILoginForm, IRegisterForm, ILoginAction}  from '../actions/auth/index';
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
+import { connectRouter } from 'connected-react-router'
 
 export const sharedItems = (state:ISharedItem[] =[], action :IAction) =>{
 
@@ -34,14 +35,14 @@ export const sharedItems = (state:ISharedItem[] =[], action :IAction) =>{
 export const loginForm = (state: ILoginForm= {username:"", password: "", token:""}, action: ILoginAction) => {
   switch(action.type) {
     case Auth.LOGIN :
- 
       return state;
     default:
       return state;  
   }
 }
 
-export default combineReducers({
+export default (history) => combineReducers({
+  router: connectRouter(history),
   sharedItems,
   loginForm
 })
